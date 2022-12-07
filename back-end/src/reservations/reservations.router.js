@@ -10,9 +10,13 @@
 
 
 router.route("/")
-    .get(controller.list)
+    .get(controller.search)
     .post(controller.create)
     .all(methodNotAllowed);
+
+router.route("/byDate")
+    .get(controller.listByDate)
+    .all(methodNotAllowed)
 
 router.route("/:reservation_id")
     .get(controller.read)

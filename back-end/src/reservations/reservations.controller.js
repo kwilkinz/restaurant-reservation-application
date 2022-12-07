@@ -4,7 +4,7 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 // ========== ============= ====== middleware ================ ================
 
-// Valid Properties √
+// Valid Properties
 const VALID_PROPERTIES = [
   "first_name", 
   "last_name", 
@@ -17,7 +17,7 @@ const VALID_PROPERTIES = [
 ];
 
 
-// checking if the req.body has these properties  √
+// checking if the req.body has these properties 
 function hasValidProperties(req, res, next) {
   const data = ({} = req.body);
   const invalidFields = Object.keys(data).filter((field) => 
@@ -92,7 +92,7 @@ async function listByDate(req, res) {
 }
 
 
-// Create 
+// Create a new reservation
 async function create(req, res, next) {
   const knexInstance = req.app.get("db");
   let newReservation = await service.create(knexInstance, req.body);
@@ -106,9 +106,9 @@ async function create(req, res, next) {
 // Read an Existing Reservation - by Id
 async function read(req, res) {
   const knexInstance = req.app.get("db");
-  const { reservation } = res.locals;
-  res.json({ data: reservation })
+  res.json({ data: res.locals.reservation });
 };
+
 
 // update an existing reservation - using the id
 async function update(req, res, next) {
