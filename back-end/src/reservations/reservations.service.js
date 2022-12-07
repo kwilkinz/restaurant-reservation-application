@@ -30,7 +30,7 @@ const update = (knex, reservationId, updatedReservation) => {
         .update(updatedReservation, "*");
 };
 
-// LISTBYDATE
+// LIST BY DATE
 const listByDate = (knex, date) => {
     return knex("reservations")
         .select("*")
