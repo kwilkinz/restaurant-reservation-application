@@ -1,4 +1,4 @@
-const reservations = require("../importseeds/00-reservations.json");
+const reservations = require("../importseeds/00-reservations");
 
 exports.seed = function (knex) {
   return knex

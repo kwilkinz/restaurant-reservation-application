@@ -1,4 +1,4 @@
-const table = require("../importseeds/01-table.json");
+const table = require("../importseeds/01-table")
 
 exports.seed = function (knex) {
     return knex
