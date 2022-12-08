@@ -1,48 +1,43 @@
+const knex = require("../db/connection");
+
 // LIST
-const list = (knex) => {
-    return knex("table")
+const list = () => {
+    return knex("tables")
         .select("*")
         .orderBy("table_name", "asc")
 };
 
 // CREATE
-const create = (knex, newTable) => {
-    return knex("table")
+const create = (newTable) => {
+    return knex("tables")
         .insert(newTable)
         .returning("*")
+        .then((created) => created[0])
 }
 
 
 // READ
-const read = (knex, tableId) => {
-    return knex("table")
+const read = (table_id) => {
+    return knex("tables")
         .select("*")
-        .where({ table_id: tableId })
+        .where({ table_id })
         .first()
 }
 
 
 // UPDATE
-const update = (knex, tableId, updatedTable) => {
-    return knex("table")
+const update = (updatedTable) => {
+    return knex("tables")
         .select("*")
-        .where({ table_id: tableId })
+        .where({ table_id: updatedTable.table_id })
         .update(updatedTable, "*")
+        .then((updated) => updated[0])
 }
 
-
-// DELETE
-const destroy = (knex, reservationId ) => {
-    return knex("table")
-        .select("*")
-        .where({ reservation_id: reservationId })
-        .del()
-}
 
 module.exports = {
     list, 
     create, 
     read, 
     update,
-    destroy,
 }

@@ -17,6 +17,8 @@ const VALID_PROPERTIES = [
 ];
 
 
+
+
 // checking if the req.body has these properties 
 function hasValidProperties(req, res, next) {
   const data = ({} = req.body);
@@ -36,24 +38,65 @@ function hasValidProperties(req, res, next) {
 // Check data to make sure it matches reservation critera 
 function dataValidation(req, res, next) {
   const { data } = req.body;
-  const reservationDate = new Date(`${data.reservation_date} ${data.reservation_time}`);
+  const reservationDate = new Date(
+    `${data.reservation_date} ${data.reservation_time}`
+  );
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",]
   let day = days[reservationDate.getDay()];
   let time = data.reservation_time;
-}
-
-// Check if the Reservation exists - using Id
-async function ifReservationExists(req, res, next) {
-  const { reservation_id } = req.params; 
-  const reservation = await service.read(reservation_id); 
-  if (reservation) {
-    res.locals.reservation = reservation; 
-    next();
-    
+  if (reservationDate < new Date() && day === "Tuesday") {
+    return next({
+      status: 400,
+      message:
+        "Reservations can only be created on a future date, excluding Tuesdays",
+    });
   }
-  return next({ status: 400, message: "Reservation cannot be found." });
+  if (reservationDate < new Date()) {
+    return next({
+      status: 400,
+      message: "Reservations can only be created on a future date",
+    });
+  }
+  if (day === "Tuesday") {
+    return next({
+      status: 400,
+      message: "Restaurant is closed on Tuesdays",
+    });
+  }
+  if (time <= "10:30" || time >= "21:30") {
+    return next({
+      status: 400,
+      message: "Reservations can only be made from 10:30AM - 9:30PM.",
+    });
+  }
+  next();
 }
 
-// is booked ?? 
+// if booked 
+function isBooked(req, res, next) {
+  const { data } = req.body; 
+  if (data.status === "seated" || data.status === "finished") {
+    return next({
+      status: 400,
+      message: "A new reservation cannot be created with a status of seated or finished.",
+    });
+  }
+  return next();
+}
+
+// if reservation exists 
+async function ifReservationExists(req, res, next) {
+  const { reservation_id } = req.params;
+  const reservation = await service.read(reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `Reservation ${reservation_id ? reservation_id : ""} Not Found`,
+  });
+}
 
 // ============= ========== ================ ================== ==============
 
@@ -123,10 +166,11 @@ async function search(req, res, next) {
 
 
 module.exports = {
-  listByDate: [asyncErrorBoundary(listByDate)],
+  list: [asyncErrorBoundary(list)],
   create: [
     hasValidProperties,
     dataValidation,
+    isBooked,
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(ifReservationExists), read],
@@ -142,8 +186,4 @@ module.exports = {
     asyncErrorBoundary(updateStatus),
   ],
   search: [asyncErrorBoundary(search)],
-  destroy: [
-    asyncErrorBoundary(ifReservationExists),
-    asyncErrorBoundary(destroy),
-  ],
 };

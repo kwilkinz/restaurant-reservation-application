@@ -15,7 +15,7 @@ router.route("/:table_id")
 // US-04 Seat Reservation
 router.route("/:table_id/seat")
     .put(controller.update)
-    .delete(controller.clearSeat)
+    .delete(controller.clearTable)
     .all(methodNotAllowed);
 
 module.exports = router;
