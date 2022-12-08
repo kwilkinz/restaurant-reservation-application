@@ -39,7 +39,7 @@ const destroy = (knex, reservationId ) => {
         .del()
 }
 
-mnodule.exports = {
+module.exports = {
     list, 
     create, 
     read, 
