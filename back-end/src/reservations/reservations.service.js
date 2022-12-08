@@ -1,7 +1,7 @@
 const knex = require("../db/connection");
 
 //LIST By Date
-const listByDate = (reservation_date) => {
+async function listByDate(reservation_date) {
     return knex("reservations")
         .select("*")
         .where({ reservation_date })
@@ -11,7 +11,7 @@ const listByDate = (reservation_date) => {
 };
 
 // list by number 
-const listByNumber = (mobile_number) => {
+async function listByNumber(mobile_number) {
     return knex("reservations")
         .whereRaw("translate(mobile_number, '() -', '') like ?",
         `%${mobile_number.replace(/\D/g, "")}%`
@@ -20,7 +20,7 @@ const listByNumber = (mobile_number) => {
 }
 
 // READ 
-const read = (reservation_id) => {
+async function read(reservation_id) {
     return knex("reservations")
         .select("*")
         .where({ reservation_id })
@@ -28,7 +28,7 @@ const read = (reservation_id) => {
 };
 
 // CREATE
-const create = (reservation) => {
+async function create(reservation) {
     return knex("reservations")
         .insert(reservation)
         .returning("*")
@@ -36,7 +36,7 @@ const create = (reservation) => {
 };
 
 // UPDATE
-const update = (reservation) => {
+async function update(reservation) {
     return knex("reservations")
         .where({ reservation_id: reservation.reservation_id })
         .update(reservation, "*")
@@ -44,7 +44,7 @@ const update = (reservation) => {
 };
 
 // UPDATE STATUS 
-const updateStatus = (reservation_id, status) => {
+async function updateStatus(reservation_id, status) {
     return knex("reservations")
         .where({ reservation_id })
         .update({ status }, "*")
@@ -53,7 +53,7 @@ const updateStatus = (reservation_id, status) => {
 
 
 // SEARCH 
-const search = (knex, mobile_number) => {
+async function search(knex, mobile_number) {
     return knex("reservations")
       .whereRaw(
         "translate(mobile_number, '() -', '') like ?",

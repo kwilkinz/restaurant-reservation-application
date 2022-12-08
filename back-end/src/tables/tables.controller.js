@@ -18,7 +18,7 @@ function hasValidProperties(req, res, next) {
       message: "requires request data",
     });
   }
-  //conditions to if valid
+
   VALID_PROPERTIES.forEach((property) => {
     if (!data[property]) {
       return next({
@@ -27,25 +27,37 @@ function hasValidProperties(req, res, next) {
       });
     }
 
-    if (
-      (property === "capacity" && data.capacity < 1) ||
-      (property === "capacity" && !Number.isInteger(data.capacity))
-    ) {
+    if (property === "people" && !Number.isInteger(data.people)) {
       return next({
         status: 400,
-        message: `${property} required to be a number of 1 or greater`,
+        message: `requires ${property} to be a number`,
       });
     }
 
-    if (property === "table_name" && data.table_name.length <= 1) {
+    if (
+      property === "reservation_date" &&
+      !dateFormatted.test(data.reservation_date)
+    ) {
       return next({
         status: 400,
-        message: `${property} required to be at least 2 characters in length`,
+        message: `requires ${property} to be properly formatted as YYYY-MM-DD`,
+      });
+    }
+
+    if (
+      property === "reservation_time" &&
+      !timeFormatted.test(data.reservation_time)
+    ) {
+      return next({
+        status: 400,
+        message: `requires ${property} to be properly formatted as HH:MM`,
       });
     }
   });
+
   next();
 }
+
 
 // check if table exists
 async function tableExists(req, res, next) {

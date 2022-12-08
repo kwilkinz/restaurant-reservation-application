@@ -1,6 +1,4 @@
 const { PORT = 5001 } = process.env;
-// const { PORT = 5002 } = process.env;
-// if so change front end to 5002 as well
 
 const app = require("./app");
 const knex = require("./db/connection");
