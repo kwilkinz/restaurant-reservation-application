@@ -105,7 +105,7 @@ async function create(req, res, next) {
 
 // Read an Existing Reservation - by Id
 async function read(req, res) {
-  const knexInstance = req.app.get("db");
+  // const knexInstance = req.app.get("db");
   res.json({ data: res.locals.reservation });
 };
 
@@ -165,7 +165,7 @@ async function search(req, res, next) {
 
 
 //destroy an existing reservation using id
-async function destroy(req, res, next) {
+async function destroy(req, res) {
   const knexInstance = req.app.get("db")
   const { reservation } = res.locals;
   await service.destroy(knexInstance, reservation.reservation_id);
@@ -176,25 +176,25 @@ async function destroy(req, res, next) {
 module.exports = {
   listByDate: [asyncErrorBoundary(listByDate)],
   create: [
-    asyncErrorBoundary(hasValidProperties),
-    asyncErrorBoundary(dataValidation),
-    create,
+    hasValidProperties,
+    dataValidation,
+    asyncErrorBoundary(create),
   ],
-  read: [asyncErrorBoundary(ifReservationExists), read ],
+  read: [asyncErrorBoundary(ifReservationExists), read],
   update: [
-    asyncErrorBoundary(hasValidProperties),
-    asyncErrorBoundary(dataValidation),
+    hasValidProperties,
+    dataValidation,
     asyncErrorBoundary(ifReservationExists),
-    update,
+    asyncErrorBoundary(update),
   ],
   statusUpdate: [
-    asyncErrorBoundary(hasValidProperties),
+    hasValidProperties,
     asyncErrorBoundary(ifReservationExists),
-    statusUpdate,
+    asyncErrorBoundary(statusUpdate),
   ],
   search: [asyncErrorBoundary(search)],
   destroy: [
     asyncErrorBoundary(ifReservationExists),
-    destroy,
+    asyncErrorBoundary(destroy),
   ],
 };
