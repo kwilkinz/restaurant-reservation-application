@@ -18,7 +18,7 @@ app.set("db", knex);
 app.use(cors());
 app.use(express.json());
 // pre-flight cors checks 
-app.options('*', cors());
+// app.options('*', cors());
 
 app.use("/reservations", reservationsRouter);
 app.use("/tables", tablesRouter);

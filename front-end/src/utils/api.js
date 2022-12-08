@@ -57,6 +57,7 @@ async function fetchJson(url, options, onCancel) {
  * Retrieves all existing reservation.
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
+ * being used @Search
  */
 
 export async function listReservations(params, signal) {
@@ -68,6 +69,26 @@ export async function listReservations(params, signal) {
     .then(formatReservationDate)
     .then(formatReservationTime);
 }
+
+/**
+ * Creates a new reservation.
+ * @returns {Promise<[reservation]>}
+ *  a promise that resolves to a possibly empty array of reservation saved in the database.
+ * Currently being used @Search
+ */
+export async function updateStatus(reservation_id, status, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`);
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(status),
+    signal,
+  };
+  return await fetchJson(url, options)
+    .then(formatReservationDate)
+    .then(formatReservationTime)
+}
+
 
 /**
  * Creates a new reservation.
@@ -85,4 +106,5 @@ export async function createReservation(reservation, signal) {
   };
   return await fetchJson(url, options, reservation);
 }
+
 
