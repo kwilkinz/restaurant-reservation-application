@@ -7,10 +7,13 @@ router.route("/")
     .post(controller.create)
     .all(methodNotAllowed);
 
+// US-04 
 router.route("/:table_id")
     .get(controller.read)
     .all(methodNotAllowed);
 
+// US-04 Seat Reservation
 router.route("/:table_id/seat")
     .put(controller.update)
-    .delete(controller.clearSeat) //unseat
+    .delete(controller.clearSeat)
+    ,all(methodNotAllowed);
