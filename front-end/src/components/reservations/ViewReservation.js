@@ -36,45 +36,46 @@ const ViewReservation = ({ reservation }) => {
           <th scope="col">People</th>
           <th scope="col">Date</th>
           <th scope="col">Time</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th scope="row">{reservation.status}</th>
+          <th scope="row" style={{width: "5%"}}>{reservation.status}</th>
           <th style={{width: "20%"}}>{reservation.first_name} {reservation.last_name}</th>
           <th>{reservation.mobile_number}</th>
           <th>{reservation.people}</th>
           <th>{reservation.reservation_date}</th>
           <th>{reservation.reservation_time}</th>
-        </tr>
-        <div>
-          <tr>
-            <th>
+          <th style={{padding: "5px"}}>
           <ErrorAlert error={showError} />
           {reservation.status === "booked" ? (
-            <button className="btn btn-success my-3 mr-3 px-3 py-2">
+            <button className="btn btn-secondary">
               <a
                 href={`/reservations/${reservation.reservation_id}/seat`}
                 style={{ color: "white", textDecoration: "none" }}
               >Seat
               </a>
             </button>
-          ) : null}</th><th>
-          <button className="btn btn-warning px-3 py-2">
-            <a
-              href={`/reservations/${reservation.reservation_id}/edit`}
-              style={{ color: "white", textDecoration: "none" }}
-            >Edit
-            </a>
-          </button></th><th>
-          <button
-            className="btn btn-secondary mx-3 px-3 py-2"
-            data-reservation-id-cancel={reservation.reservation_id}
-            onClick={handleCancel}
-          > Cancel
-          </button></th>
-          </tr>
-        </div>
+          ) : null}
+          </th>
+          <th style={{padding: "5px"}}>
+            <button className="btn btn-info">
+             <a
+                href={`/reservations/${reservation.reservation_id}/edit`}
+                style={{ color: "white", textDecoration: "none" }}>Edit</a>
+            </button>
+          </th>
+          <th style={{padding: "5px"}}>
+            <button
+              className="btn btn-dark"
+              data-reservation-id-cancel={reservation.reservation_id}
+              onClick={handleCancel}>Cancel
+            </button>
+          </th>
+        </tr>
       </tbody>
     </table>
      

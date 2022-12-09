@@ -83,15 +83,15 @@ const ReservationForm = ({ formData, handleChange, handleSubmit }) => {
                 />
                 <div>
                     {/* Submit Bttn */}
-                    <button 
-                        className="btn btn-primary"
+                    <button style={{paddingLeft: "25px", paddingRight: "25px"}}
+                        className="btn btn-success shadow"
                         type="submit"
                         > Submit
                     </button>
                     &nbsp;
                     {/* Cancel Bttn */}
-                    <button 
-                        className="btn btn-secondary"
+                    <button style={{paddingLeft: "25px", paddingRight: "25px"}}
+                        className="btn btn-secondary shadow"
                         type="button"
                         onClick={() => history.goBack()}
                         > Cancel
