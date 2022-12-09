@@ -62,10 +62,11 @@ function Dashboard({ date, setDate }) {
     return () => abortController.abort();
   };
 
-/**
- * xxx
- */
 
+/**
+ * @reservationlist fetches customers with dates of today, tomorrow, or previous date.
+ * @tablesList fetches ....
+ */
 const reservationList = reservations.map((reservation) => {
   if (reservation.status === "cancelled" || reservation.status === "finished") return null;
   return ( <ViewReservation key={reservation.reservation_id} reservation={reservation}/> )
@@ -79,33 +80,36 @@ const tablesList = tables.map((table) => (
   return (
     <main>
       <h1 className="text-center">Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
-      </div>
-        <button
+      <div className="d-md-flex mb-3" >
+      <button
           className="btn btn-dark"
+          style={{padding: "7px 15px", marginRight: "10px" }}
           onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
           >Previous
         </button>
         <button
           className="btn btn-info"
+          style={{padding: "7px 15px", marginRight: "10px" }}
           onClick={() => history.push(`/dashboard?date=${previous(today())}`)}
           >Today
         </button>
         <button
           className="btn btn-dark"
+          style={{padding: "7px 15px", marginRight: "10px" }}
           onClick={() => history.push(`/dashboard?date=${next(date)}`)}
           >Next
         </button>
+      </div>
+        <h3>Reservations for {date}</h3>
       <ErrorAlert error={reservationsError} />
       <ErrorAlert error={tableError} />
 
       <div>
+     
         <div>{reservationList}</div>
-        <p>Above is where reservations is suppose to print</p>
       </div>
       <div>
-        <h3>Tables</h3>
+        <h3 className="mt-4 text-center">Tables</h3>
         <div>{tablesList}</div>
       </div>
       
