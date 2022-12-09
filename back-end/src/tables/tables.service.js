@@ -1,12 +1,5 @@
 const knex = require("../db/connection");
 
-// LIST
-async function list() {
-    return knex("tables")
-        .select("*")
-        .orderBy("table_name", "asc")
-};
-
 // CREATE
 async function create(newTable) {
     return knex("tables")
@@ -15,6 +8,13 @@ async function create(newTable) {
         .then((created) => created[0])
 };
 
+
+// LIST
+async function list() {
+    return knex("tables")
+        .select("*")
+        .orderBy("table_name", "asc")
+};
 
 // READ
 async function read (table_id) {
@@ -36,8 +36,8 @@ async function update(updatedTable) {
 
 
 module.exports = {
-    list, 
     create, 
+    list, 
     read, 
     update,
 }

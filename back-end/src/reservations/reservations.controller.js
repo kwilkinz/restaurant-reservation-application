@@ -100,6 +100,12 @@ async function ifReservationExists(req, res, next) {
 
 // ============= ========== ================ ================== ==============
 
+// Create a new reservation
+async function create(req, res, next) {
+  const reservation = await service.create(req.body.data);
+  res.status(201).json({ data: reservation })
+};
+
 
 // List all Reservations on a specific date or phone number.
 async function list(req, res) {
@@ -111,13 +117,6 @@ async function list(req, res) {
     reservations = await service.listByNumber(mobile_number);
   }
   res.json({ data: reservations })
-};
-
-
-// Create a new reservation
-async function create(req, res, next) {
-  const reservation = await service.create(req.body.data);
-  res.status(201).json({ data: reservation })
 };
 
 
@@ -166,13 +165,13 @@ async function search(req, res, next) {
 
 
 module.exports = {
-  list: [asyncErrorBoundary(list)],
   create: [
     hasValidProperties,
     dataValidation,
     isBooked,
     asyncErrorBoundary(create),
   ],
+  list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(ifReservationExists), read],
   update: [
     hasValidProperties,

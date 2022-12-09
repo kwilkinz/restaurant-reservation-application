@@ -139,10 +139,18 @@ function validTable(req, res, next) {
 
 // ============= ROUTER CALLS =====================
 
-// list -- 
-async function list(req, res) {
-  const data = await service.list();
-  res.json({ data });
+// clear seat 
+async function clearTable(req, res, next) {
+  const table = res.locals.table;
+  const clearedTable = {
+    ...table,
+    reservation_id: null,
+  };
+  reservationService.updateStatus(table.reservation_id, "finished");
+  service
+    .update(clearedTable)
+    .then((data) => res.json({ data }))
+    .catch(next);
 }
 
 //create 
@@ -150,6 +158,13 @@ async function create(req, res) {
   const { data } = req.body;
   const newTable = await service.create(data);
   res.status(201).json({ data: newTable });
+}
+
+
+// list -- 
+async function list(req, res) {
+  const data = await service.list();
+  res.json({ data });
 }
 
 // read 
@@ -185,24 +200,14 @@ async function seatTable(req, res, next) {
 
 
 
-// clear seat 
-async function clearTable(req, res, next) {
-  const table = res.locals.table;
-  const clearedTable = {
-    ...table,
-    reservation_id: null,
-  };
-  reservationService.updateStatus(table.reservation_id, "finished");
-  service
-    .update(clearedTable)
-    .then((data) => res.json({ data }))
-    .catch(next);
-}
-
-
 module.exports = {
-  list: [asyncErrorBoundary(list)],
+  clearTable: [
+    asyncErrorBoundary(tableExists),
+    tableOccupied,
+    asyncErrorBoundary(clearTable),
+  ],
   create: [hasValidProperties, asyncErrorBoundary(create)],
+  list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(tableExists), read],
   update: [
     validRequest,
@@ -211,10 +216,5 @@ module.exports = {
     validTable,
     notSeated,
     asyncErrorBoundary(seatTable),
-  ],
-  clearTable: [
-    asyncErrorBoundary(tableExists),
-    tableOccupied,
-    asyncErrorBoundary(clearTable),
   ],
 };
