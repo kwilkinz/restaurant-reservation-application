@@ -42,7 +42,7 @@ function Dashboard({ date, setDate }) {
       }
     }
     getNewDate();
-  }, [query, route, date])
+  }, [query, route, setDate])
   useEffect(loadDashboard, [date]);
 
   /**
@@ -65,6 +65,7 @@ function Dashboard({ date, setDate }) {
 /**
  * xxx
  */
+
 const reservationList = reservations.map((reservation) => {
   if (reservation.status === "cancelled" || reservation.status === "finished") return null;
   return ( <ViewReservation key={reservation.reservation_id} reservation={reservation}/> )
@@ -101,8 +102,8 @@ const tablesList = tables.map((table) => (
 
       <div>
         <div>{reservationList}</div>
+        <p>Above is where reservations is suppose to print</p>
       </div>
-
       <div>
         <h3>Tables</h3>
         <div>{tablesList}</div>

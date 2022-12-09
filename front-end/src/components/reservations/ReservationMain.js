@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory, useParams } from "react-router";
+import { useHistory } from "react-router";
 import ErrorAlert from "../../layout/ErrorAlert";
 import ReservationForm from "./ReservationForm";
 import { createReservation } from "../../utils/api";
@@ -25,7 +25,6 @@ const ReservationMain = ({ date }) => {
 
   // imports
   const abortController = new AbortController();
-  const params = useParams();
   const history = useHistory();
 
   // format date

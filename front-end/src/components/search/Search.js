@@ -61,7 +61,7 @@ const Search = () => {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
-          filter: "brightness(0.8)" + "brightness(1.3)",
+          filter: "(brightness(0.8) + brightness(1.3)",
           padding: "85px",
           borderRadius: "15px",
         }}

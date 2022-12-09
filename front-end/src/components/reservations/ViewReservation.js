@@ -26,7 +26,7 @@ const ViewReservation = ({ reservation }) => {
 
 
   return (
-    <div>
+  <div>
     <table className="table table-hover">
       <thead className="thead-light">
         <tr>
