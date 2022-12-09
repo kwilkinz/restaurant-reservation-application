@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
-import NotFound from "./NotFound";
-import Search from "../components/search/Search";
-import Seat from "../components/seat/Seat";
 import ReservationMain from "../components/reservations/ReservationMain";
-import TablesMain from "../components/tables/TablesMain";
-import { today } from "../utils/date-time";
+import Seat from "../components/seat/Seat";
+import EditReservation from "../components/reservations/EditReservation";
 import TablesForm from "../components/tables/TablesForm";
+import Search from "../components/search/Search";
+import NotFound from "./NotFound";
+import { today } from "../utils/date-time";
 
 /**
  * Defines all the routes for the application.
@@ -33,13 +32,13 @@ function Routes() {
         <ReservationMain />
       </Route>
 
+      <Route path="/reservations/:reservation_id/edit" >
+        <EditReservation date={date} setDate={setDate}/> 
+      </Route>
+
      <Route path="/reservations/:reservation_id/seat" >
         <Seat /> 
       </Route>
-
-      {/* <Route path="/reservations/:reservation_id/edit" >
-        <ReservationMain /> 
-      </Route> */}
 
       <Route exact={true} path="/tables/new" >
         <TablesForm />

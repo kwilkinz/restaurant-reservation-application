@@ -179,7 +179,7 @@ async function update(req, res, next) {
   };
   service
     .update(updated)
-    .then((data) => res.json({ data }))
+    .then((data) => res.json({ data: data }))
     .catch(next);
 }
 

@@ -7,7 +7,7 @@
  const methodNotAllowed = require("../errors/methodNotAllowed");
 
 
-router.route("/", function(req, res) {})
+router.route("/")
     .get(controller.list)
     .post(controller.create)
     .all(methodNotAllowed)
