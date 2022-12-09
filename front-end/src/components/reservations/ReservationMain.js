@@ -77,7 +77,7 @@ const ReservationMain = ({ date }) => {
     };
     try {
       await createReservation(newRes, abortController.signal);
-      formData(initialState);
+      setFormData(initialState);
       history.push(`/dashboard?date=${newRes.reservation_date}`);
     } catch (error) {
       if (error.name !== "AbortError") setShowError(error);

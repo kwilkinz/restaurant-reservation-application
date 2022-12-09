@@ -8,6 +8,7 @@ import Seat from "../components/seat/Seat";
 import ReservationMain from "../components/reservations/ReservationMain";
 import TablesMain from "../components/tables/TablesMain";
 import { today } from "../utils/date-time";
+import TablesForm from "../components/tables/TablesForm";
 
 /**
  * Defines all the routes for the application.
@@ -41,7 +42,7 @@ function Routes() {
       </Route> */}
 
       <Route exact={true} path="/tables/new" >
-        <TablesMain />
+        <TablesForm />
       </Route>
 
       <Route path="/search" >

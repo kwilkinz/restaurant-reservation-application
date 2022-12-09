@@ -24,9 +24,9 @@ const TablesMain = ({ table }) => {
         }
       }
 
-
-    const finishTable = reservation_id === "occupied" ? (
-        <button className="btn btn danger" data-table-id-finish={table_id} onClick={handleClick}>Finish</button> ) : ( <></> )
+// doesnt work fix 
+    const finishTable = reservation_id ? (
+        <div data-table-id-finish={table_id} onClick={handleClick}></div> ) : ( <></> )
 
 
     return (
@@ -49,7 +49,10 @@ const TablesMain = ({ table }) => {
                     <th style={{width: "25%"}}>{capacity}</th>
                     <th style={{width: "25%"}}>{table_id}</th>
                     <th style={{width: "25%"}} data-table-id-status={table_id}>{reservation_id ? "Occupied" : "Free"}</th>
-                    <th>{finishTable}</th>
+                    <button className="btn btn-secondary" onClick={finishTable} >Finish</button>
+        {/* // above btn doesbt work when clicked */}
+                    {/* //change status on click*/}
+
                     
                 </tr>
             </tbody>
