@@ -77,6 +77,10 @@ const tablesList = tables.map((table) => (
 ));
   
 
+/**
+ * @previous date - needs to call a function instead of an object when inside the return ui
+ */
+
   return (
     <main>
       <h1 className="text-center">Dashboard</h1>
@@ -90,7 +94,7 @@ const tablesList = tables.map((table) => (
         <button
           className="btn btn-info"
           style={{padding: "7px 15px", marginRight: "10px" }}
-          onClick={() => history.push(`/dashboard?date=${previous(today())}`)}
+          onClick={() => history.push(`/dashboard?date=${today()}`)}
           >Today
         </button>
         <button
