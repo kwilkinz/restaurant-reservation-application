@@ -40,7 +40,7 @@ const TablesForm = () => {
     };
     try {
       await createTable(newTable, abortController.signal);
-      formData(initialState);
+      setFormData(initialState);
       history.push(`/dashboard`);
     } catch (error) {
       if (error.name !== "AbortError") setShowError(error);
