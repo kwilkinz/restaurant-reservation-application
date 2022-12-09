@@ -5,6 +5,9 @@ import ReservationForm from "./ReservationForm";
 import { createReservation } from "../../utils/api";
 
 const ReservationMain = ({ date }) => {
+  //image
+  const externalImage = "https://worldarchitecture.org/cdnimgfiles/extuploadc/2002kinkbar2179.jpg"
+
   // Initial Form State
   const initialState = {
     first_name: "",
@@ -87,9 +90,16 @@ const ReservationMain = ({ date }) => {
   }
 
   return (
-    <div>
-      <h1>Make a New Reservation</h1>
-      <div className="d-md-flex mb-3">
+    <div style={{
+      backgroundImage: `url(${externalImage})`,
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      opacity: "87%",
+      padding: "80px", 
+      borderRadius: "15px"}}>
+      <h1  style={{color: "white", textAlign: "center"}}>Make a New Reservation</h1>
+      <div className="d-md-flex mb-3" style={{textAlign: "center", justifyContent: "center"}}>
         <ErrorAlert error={showError} />
         <ReservationForm
           formData={formData}

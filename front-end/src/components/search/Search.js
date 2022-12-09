@@ -5,6 +5,8 @@ import ViewReservation from "../reservations/ViewReservation";
 
 
 const Search = () => {
+  //image
+const externalImage = "https://worldarchitecture.org/cdnimgfiles/extuploadc/15xxzwluzwil9549.jpg"
 const initialState = { mobile_number: "--- --- ----"}
     
     //useStates
@@ -45,35 +47,44 @@ const searchResults =
             key={reservation.reservation_id}
             reservation={reservation}
           />
-        ))
-      : "Please type in number for reservation";
+        )) : null;
 
   return (
-    <main>
-      <div className="d-md-flex mb-3">
-        <h3>Search for a reservation by phone number</h3>
-      </div>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <input
-            id="mobile_number"
-            type="text"
-            name="mobile_number"
-            onChange={handleChange}
-            value={FormData.mobile_phone}
-            placeholder="(---) --- ----"
-            required
-          />
-          &nbsp;
-          <button type="submit" className="btn btn-dark">
-            Find Reservation
-          </button>
-        </form>
-      </div>
-      <div>
-         {searchResults}
-      </div>
-      <ErrorAlert error={showError} />
+    <main style={{
+      backgroundImage: `url(${externalImage})`,
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      filter: "brightness(0.8)" + "brightness(1.3)",
+      padding: "85px", 
+      borderRadius: "15px",
+      }}>
+      <div className="d-md-flex mb-3" style={{ justifyContent: "center", alignItems: "center"}}>
+          <h3 style={{color: "white"}}>Search for a reservation by phone number</h3>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+          <form onSubmit={handleSubmit}>
+            <input
+              id="mobile_number"
+              type="text"
+              name="mobile_number"
+              onChange={handleChange}
+              value={FormData.mobile_phone}
+              placeholder="(---) --- ----"
+              required
+              />
+            &nbsp;
+            <button type="submit" className="btn btn-dark">
+              Find Reservation
+            </button>
+          </form>
+        <div>
+          {searchResults}
+        </div>
+      
+        <ErrorAlert error={showError} />
+
+          </div>
     </main>
   );
 };
