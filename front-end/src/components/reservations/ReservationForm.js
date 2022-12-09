@@ -7,7 +7,7 @@ const ReservationForm = ({ formData, handleChange, handleSubmit }) => {
         <div>
             <form onSubmit={handleSubmit}>
                 {/* first name */}
-                <label htmlFor="first_name">First Name:</label>
+                <label htmlFor="first_name" >First Name:</label>
                 <input 
                     id="first_name"
                     type="text"
@@ -15,6 +15,7 @@ const ReservationForm = ({ formData, handleChange, handleSubmit }) => {
                     onChange={handleChange}
                     value={formData.first_name}
                     required
+                    style={{ width: "20%", margin: "8px", textAlign: "center", background: "lightgrey" }}
                 />
                 {/* last name */}
                 <label htmlFor="last_name">Last Name:</label>
@@ -25,7 +26,9 @@ const ReservationForm = ({ formData, handleChange, handleSubmit }) => {
                     onChange={handleChange}
                     value={formData.last_name}
                     required
+                    style={{ width: "30%", margin: "8px", textAlign: "center" }}
                 />
+                <br />
                  {/* mobile number */}
                 <label htmlFor="mobile_number">Phone Number:</label>
                 <input 
@@ -36,6 +39,7 @@ const ReservationForm = ({ formData, handleChange, handleSubmit }) => {
                     value={formData.mobile_number}
                     placeholder="(---) --- ----"
                     required
+                    style={{ width: "20%", margin: "8px", textAlign: "center" }}
                 />
                  {/* Reservation date */}
                  <label htmlFor="reservation_date">Date of Reservation:</label>
@@ -48,7 +52,9 @@ const ReservationForm = ({ formData, handleChange, handleSubmit }) => {
                     pattern="\d{4}-\d{2}-\d{2}"
                     placeholder="YYYY-MM-DD"
                     required
+                    style={{ width: "25%", margin: "8px", textAlign: "center" }}
                 />
+                < br />
                  {/* Reservation time */}
                  <label htmlFor="reservation_time">Time of Reservation:</label>
                  <input 
@@ -60,9 +66,10 @@ const ReservationForm = ({ formData, handleChange, handleSubmit }) => {
                     pattern="[0-9]{2}:[0-9]{2}"
                     placeholder="HH:MM"
                     required
+                    style={{ width: "25%", margin: "8px", textAlign: "center" }}
                 />
                 {/* Reservation time */}
-                 <label htmlFor="people">Number of people in party (must be more than 1):</label>
+                 <label htmlFor="people">People in party:</label>
                  <input 
                     id="people"
                     type="number"
@@ -72,6 +79,7 @@ const ReservationForm = ({ formData, handleChange, handleSubmit }) => {
                     min={1}
                     placeholder={1}
                     required
+                    style={{ width: "15%", margin: "8px", textAlign: "center" }}
                 />
                 <div>
                     {/* Submit Bttn */}

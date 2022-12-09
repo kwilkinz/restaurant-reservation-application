@@ -46,7 +46,7 @@ const searchResults =
             reservation={reservation}
           />
         ))
-      : "No reservations found!";
+      : "Please type in number for reservation";
 
   return (
     <main>
@@ -61,6 +61,7 @@ const searchResults =
             name="mobile_number"
             onChange={handleChange}
             value={FormData.mobile_phone}
+            placeholder="(---) --- ----"
             required
           />
           &nbsp;
@@ -70,9 +71,9 @@ const searchResults =
         </form>
       </div>
       <div>
-         <ErrorAlert error={showError} />
          {searchResults}
       </div>
+      <ErrorAlert error={showError} />
     </main>
   );
 };
