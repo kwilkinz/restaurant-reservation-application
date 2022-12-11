@@ -1,20 +1,13 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+
+// ======================== Middleware ========================
+
 const dateFormatted = /[0-9]{4}-[0-9]{2}-[0-9]{2}/;
 const timeFormatted = /[0-9]{2}:[0-9]{2}/;
 
-const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
-const validProperties = [
+const VALID_PROPERTIES = [
   "first_name",
   "last_name",
   "mobile_number",
@@ -22,16 +15,6 @@ const validProperties = [
   "reservation_date",
   "reservation_time",
 ];
-
-const validStatuses = ["booked", "cancelled", "finished", "seated"];
-
-/**
- * Create handler
- */
-async function create(req, res) {
-  const reservation = await service.create(req.body.data);
-  res.status(201).json({ data: reservation });
-}
 
 function hasValidProperties(req, res, next) {
   const { data = {} } = req.body;
@@ -42,7 +25,8 @@ function hasValidProperties(req, res, next) {
     });
   }
 
-  validProperties.forEach((property) => {
+  // Valid Properties within the body
+  VALID_PROPERTIES.forEach((property) => {
     if (!data[property]) {
       return next({
         status: 400,
@@ -77,27 +61,17 @@ function hasValidProperties(req, res, next) {
       });
     }
   });
-
   next();
 }
 
-function isBooked(req, res, next) {
-  const { data } = req.body;
-  if (data.status === "seated" || data.status === "finished") {
-    return next({
-      status: 400,
-      message:
-        "A new reservation cannot be created with a status of seated or finished",
-    });
-  }
-  next();
-}
 
+// Verifying conditions of days 
 function isValidDay(req, res, next) {
   const { data } = req.body;
   const reservationDate = new Date(
     `${data.reservation_date} ${data.reservation_time}`
   );
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
   let day = days[reservationDate.getDay()];
   let time = data.reservation_time;
   if (reservationDate < new Date() && day === "Tuesday") {
@@ -127,6 +101,31 @@ function isValidDay(req, res, next) {
   }
   next();
 }
+
+// reservation has to start as booked.
+function isBooked(req, res, next) {
+  const { data } = req.body;
+  if (data.status === "seated" || data.status === "finished") {
+    return next({
+      status: 400,
+      message:
+        "A new reservation cannot be created with a status of seated or finished",
+    });
+  }
+  next();
+}
+
+// ======================== ========== ========================
+
+
+async function create(req, res) {
+  const reservation = await service.create(req.body.data);
+  res.status(201).json({ data: reservation });
+}
+
+
+
+
 
 /**
  * List handler for reservation resources
@@ -196,6 +195,7 @@ async function updateStatus(req, res, next) {
 
 function validStatus(req, res, next) {
   const { status } = req.body.data;
+  const validStatuses = ["booked", "cancelled", "finished", "seated"];
   if (validStatuses.includes(status)) {
     res.locals.status = status;
     next();
@@ -207,6 +207,9 @@ function validStatus(req, res, next) {
     });
   }
 }
+
+
+
 
 module.exports = {
   create: [
