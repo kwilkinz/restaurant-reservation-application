@@ -26,6 +26,7 @@ function Dashboard({ date, setDate }) {
   const history = useHistory();
   const query = useQuery();
   const route = useRouteMatch();
+  const externalImage = "https://garden.spoonflower.com/c/5090068/p/f/m/3yDyWOWB4oECjSmqcc9qmveAYXj9WfizlmWcqq8S3gEqvqlo5DilMA/Light%20Gray%20Solid.jpg"
 
 
   /**
@@ -83,7 +84,7 @@ const tablesList = tables.map((table) => (
 
   return (
     <main>
-      <h1 className="text-center">Dashboard</h1>
+      <h1 className="text-center" style={{marginTop: "15px"}}>Dashboard</h1>
       <div className="d-md-flex mb-3" >
       <button
           className="btn btn-dark"
