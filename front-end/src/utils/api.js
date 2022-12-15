@@ -8,13 +8,16 @@
  const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5001";
  
+  
  /**
   * Defines the default headers for these functions to work with `json-server`
+  * added a CORS header to all 
   */
  const headers = new Headers();
  headers.append("Access-Control-Allow-Origin", "*");
  headers.append("Content-Type", "application/json");
  
+
  /**
   * Fetch `json` from the specified URL and handle error status codes and ignore `AbortError`s
   *
@@ -53,6 +56,15 @@
    }
  }
  
+
+/**
+ * Unoccupy the table in the database. 
+ * @param table_id 
+ * The table_id for the table to be unseated. It will change status from 
+ * "occupied" to free
+ * @param  signal 
+ * an optional abort signal
+ */
  export async function clearTable(table_id, signal) {
    const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
    const options = {
@@ -63,6 +75,7 @@
    return await fetchJson(url, options);
  }
  
+
  /**
   * Creates a new reservation
   * @returns {Promise<{reservation}>}
@@ -79,6 +92,14 @@
    return await fetchJson(url, options, reservation);
  }
  
+
+ /**
+  * Adds a new table to the database
+  * @param table 
+  * an object that contains the data information of the new table.
+  * @param signal 
+  * an optional abort signal
+  */
  export async function createTable(table, signal) {
    const url = new URL(`${API_BASE_URL}/tables`);
    const options = {
@@ -90,12 +111,12 @@
    return await fetchJson(url, options, table);
  }
  
+
  /**
   * Retrieves all existing reservations.
   * @returns {Promise<[reservations]>}
-  *  a promise that resolves to a possibly empty array of reservations saved in the database.
+  * a promise that resolves to a possibly empty array of reservations saved in the database.
   */
- 
  export async function listReservations(params, signal) {
    const url = new URL(`${API_BASE_URL}/reservations`);
    Object.entries(params).forEach(([key, value]) =>
@@ -106,16 +127,37 @@
      .then(formatReservationTime);
  }
  
+
+ /**
+  * lists all tables from the database
+  * @param signal 
+  *an optional abort signal
+  */
  export async function listTables(signal) {
    const url = new URL(`${API_BASE_URL}/tables`);
    return await fetchJson(url, { headers, signal }, []);
  }
  
+
+ /**
+  * reads the reservations by using the reservation_id
+  * @param reservation_id 
+  * @param signal
+  */
  export async function readReservation(reservation_id, signal) {
    const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`);
    return await fetchJson(url, { headers, signal }, {});
  }
  
+
+ /**
+  * Occupy the table in the database. 
+  * @param reservation_id 
+  * using the reservation_id and 
+  * @param table_id 
+  * table_id the table can be unseated and seated.
+  * @param signal 
+  */
  export async function seatReservation(reservation_id, table_id, signal) {
    const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
    const options = {
@@ -127,6 +169,12 @@
    return await fetchJson(url, options, {});
  }
  
+
+ /**
+  * updates a single reservation using the reservation_id
+  * @param reservation 
+  * @param signal 
+  */
  export async function updateReservation(reservation, signal) {
    const url = new URL(
      `${API_BASE_URL}/reservations/${reservation.reservation_id}`
@@ -140,6 +188,15 @@
    return await fetchJson(url, options, reservation);
  }
  
+ 
+ /**
+  * Updates the status of a specific reservation 
+  * @param reservation_id 
+  * using the reservation_id it is updated. 
+  * @param status 
+  * an object containing that updates the field of status of a reservation.
+  * @param signal 
+  */
  export async function updateStatus(reservation_id, status, signal) {
    const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`);
    const options = {

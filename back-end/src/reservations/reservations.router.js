@@ -9,7 +9,6 @@
  * changing the status is allowed through updateStatus.
  */
 
-
 router.route("/")
     .get(controller.list)
     .post(controller.create)

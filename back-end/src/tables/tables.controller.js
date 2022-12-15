@@ -9,57 +9,23 @@ const timeFormatted = /[0-9]{2}:[0-9]{2}/;
 
 const VALID_PROPERTIES = ["capacity", "table_name"];
 
-// checking valid props
+// check that incoming data has only valid properties
 function hasValidProperties(req, res, next) {
-  const { data = {} } = req.body;
-  if (!data) {
+  const data = ({} = req.body);
+  const invalidFields = Object.keys(data).filter(
+    (field) => !VALID_PROPERTIES.includes(field)
+  );
+
+  if (invalidFields.length) {
     return next({
       status: 400,
-      message: "requires request data",
+      message: `Invalid field(s): ${invalidFields.join(", ")}`,
     });
   }
-
-  VALID_PROPERTIES.forEach((property) => {
-    if (!data[property]) {
-      return next({
-        status: 400,
-        message: `requires ${property}`,
-      });
-    }
-
-    if (property === "people" && !Number.isInteger(data.people)) {
-      return next({
-        status: 400,
-        message: `requires ${property} to be a number`,
-      });
-    }
-
-    if (
-      property === "reservation_date" &&
-      !dateFormatted.test(data.reservation_date)
-    ) {
-      return next({
-        status: 400,
-        message: `requires ${property} to be properly formatted as YYYY-MM-DD`,
-      });
-    }
-
-    if (
-      property === "reservation_time" &&
-      !timeFormatted.test(data.reservation_time)
-    ) {
-      return next({
-        status: 400,
-        message: `requires ${property} to be properly formatted as HH:MM`,
-      });
-    }
-  });
-
   next();
 }
 
-
-// check if table exists
+// check to make sure the table exists then pass along the table_id 
 async function tableExists(req, res, next) {
   const { table_id } = req.params;
   const table = await service.read(table_id);
@@ -73,48 +39,7 @@ async function tableExists(req, res, next) {
   });
 }
 
-// check if the reservation exists
-async function reservationExists(req, res, next) {
-  const { reservation_id } = req.body.data;
-  const reservation = await reservationService.read(reservation_id);
-  if (reservation) {
-    res.locals.reservation = reservation;
-    return next();
-  }
-  next({
-    status: 404,
-    message: `Reservation ${reservation_id} Not Found`,
-  });
-}
-
-function tableOccupied(req, res, next) {
-  const table = res.locals.table;
-  if (table.reservation_id === null) {
-    return next({
-      status: 400,
-      message: "Table is not occupied!",
-    });
-  }
-  next();
-}
-
-async function validRequest(req, res, next) {
-  const { data } = req.body;
-  if (!data) {
-    return next({
-      status: 400,
-      message: `requires request data`,
-    });
-  }
-  if (!data.reservation_id) {
-    return next({
-      status: 400,
-      message: `Requires reservation_id property`,
-    });
-  }
-  next();
-}
-
+// if the table capacity can handle the current number of people within the party
 function validTable(req, res, next) {
   const reservation = res.locals.reservation;
   const table = res.locals.table;
@@ -134,12 +59,9 @@ function validTable(req, res, next) {
   next();
 }
 
-// ================================================
+// =====================================================
 
-
-// ============= ROUTER CALLS =====================
-
-// clear seat 
+// clear a reservation at a specific table
 async function clearTable(req, res, next) {
   const table = res.locals.table;
   const clearedTable = {
@@ -153,26 +75,25 @@ async function clearTable(req, res, next) {
     .catch(next);
 }
 
-//create 
+// creates a new table
 async function create(req, res) {
   const { data } = req.body;
   const newTable = await service.create(data);
   res.status(201).json({ data: newTable });
 }
 
-
-// list -- 
+// list all tables
 async function list(req, res) {
   const data = await service.list();
   res.json({ data });
 }
 
-// read 
+// read a specific table 
 function read(req, res) {
   res.json({ data: res.locals.table });
 }
 
-//update (notseated + seated)
+//unseat a reservation from a table 
 function notSeated(req, res, next) {
   const { reservation_id, status } = res.locals.reservation;
   if (status === "seated") {
@@ -184,6 +105,7 @@ function notSeated(req, res, next) {
   next();
 }
 
+//seat a reservation to a table 
 async function seatTable(req, res, next) {
   const reservation_id = res.locals.reservation.reservation_id;
   const table = res.locals.table;
@@ -197,7 +119,6 @@ async function seatTable(req, res, next) {
     .then((data) => res.json({ data }))
     .catch(next);
 }
-
 
 
 module.exports = {

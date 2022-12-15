@@ -8,7 +8,6 @@ async function create(newTable) {
         .then((created) => created[0])
 };
 
-
 // LIST
 async function list() {
     return knex("tables")
@@ -24,7 +23,6 @@ async function read (table_id) {
         .first()
 };
 
-
 // UPDATE
 async function update(updatedTable) {
     return knex("tables")
@@ -33,7 +31,6 @@ async function update(updatedTable) {
         .update(updatedTable, "*")
         .then((updated) => updated[0])
 };
-
 
 module.exports = {
     create, 

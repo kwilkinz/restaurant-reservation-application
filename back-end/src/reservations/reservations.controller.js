@@ -1,7 +1,6 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-
 // ======================== Middleware ========================
 
 const dateFormatted = /[0-9]{4}-[0-9]{2}-[0-9]{2}/;
@@ -21,33 +20,36 @@ function hasValidProperties(req, res, next) {
   if (!data) {
     return next({
       status: 400,
-      message: "requires request data",
+      message: "Requires valid property",
     });
   }
 
-  // Valid Properties within the body
+  /**
+   * Checking Properties :
+   * 1st. if no property it needs to require one. 
+   * 2nd. requires the people to be a Number. 
+   * 3rd. requires the reservation date to be formatted correctly. 
+   * 4th. requires the time to be formatted correctly.
+   */
   VALID_PROPERTIES.forEach((property) => {
     if (!data[property]) {
       return next({
         status: 400,
-        message: `requires ${property}`,
+        message: `Requires ${property}`,
       });
     }
-
+  
     if (property === "people" && !Number.isInteger(data.people)) {
       return next({
         status: 400,
-        message: `requires ${property} to be a number`,
+        message: `Requires ${property} to be a number`,
       });
     }
 
-    if (
-      property === "reservation_date" &&
-      !dateFormatted.test(data.reservation_date)
-    ) {
+    if (property === "reservation_date" && !dateFormatted.test(data.reservation_date)) {
       return next({
         status: 400,
-        message: `requires ${property} to be properly formatted as YYYY-MM-DD`,
+        message: `Requires ${property} to be properly formatted as YYYY-MM-DD`,
       });
     }
 
@@ -68,10 +70,8 @@ function hasValidProperties(req, res, next) {
 // Verifying conditions of days 
 function isValidDay(req, res, next) {
   const { data } = req.body;
-  const reservationDate = new Date(
-    `${data.reservation_date} ${data.reservation_time}`
-  );
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",];
+  const reservationDate = new Date(`${data.reservation_date} ${data.reservation_time}`);
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   let day = days[reservationDate.getDay()];
   let time = data.reservation_time;
   if (reservationDate < new Date() && day === "Tuesday") {
@@ -102,7 +102,11 @@ function isValidDay(req, res, next) {
   next();
 }
 
-// reservation has to start as booked.
+/**
+ * the reservation has to  start off as booked and can only be edited if the client 
+ * is either free or booked. 
+ * Cannot change once seated or client is finished.
+ */
 function isBooked(req, res, next) {
   const { data } = req.body;
   if (data.status === "seated" || data.status === "finished") {
@@ -115,33 +119,6 @@ function isBooked(req, res, next) {
   next();
 }
 
-// ======================== ========== ========================
-
-
-async function create(req, res) {
-  const reservation = await service.create(req.body.data);
-  res.status(201).json({ data: reservation });
-}
-
-
-
-
-
-/**
- * List handler for reservation resources
- */
-async function list(req, res) {
-  const { date, mobile_number } = req.query;
-  let reservations;
-  if (date) {
-    reservations = await service.listByDate(date);
-  } else if (mobile_number) {
-    reservations = await service.listByNumber(mobile_number);
-  }
-
-  res.json({ data: reservations });
-}
-
 function notFinished(req, res, next) {
   const { reservation_id } = req.params;
   const status = res.locals.reservation.status;
@@ -152,10 +129,6 @@ function notFinished(req, res, next) {
     });
   }
   next();
-}
-
-function read(req, res) {
-  res.json({ data: res.locals.reservation });
 }
 
 async function reservationExists(req, res, next) {
@@ -171,6 +144,39 @@ async function reservationExists(req, res, next) {
   });
 }
 
+
+// ======================== ========== ========================
+
+// create a new reservation using "form" data
+async function create(req, res) {
+  const reservation = await service.create(req.body.data);
+  res.status(201).json({ data: reservation });
+}
+
+/**
+ * List handler for reservation resources either by 
+ * date or mobile phone number
+ */
+async function list(req, res) {
+  const { date, mobile_number } = req.query;
+  let reservations;
+  if (date) {
+    reservations = await service.listByDate(date);
+  } else if (mobile_number) {
+    reservations = await service.listByNumber(mobile_number);
+  }
+  res.json({ data: reservations });
+}
+
+// read the reservations
+function read(req, res) {
+  res.json({ data: res.locals.reservation });
+}
+
+/**
+ * update the current reservation using the reservation_id being passed in 
+ * via Url (req.body) and then update sending back the updated reservation 
+ * */ 
 async function update(req, res, next) {
   const updated = {
     ...req.body.data,
@@ -182,6 +188,10 @@ async function update(req, res, next) {
     .catch(next);
 }
 
+/**
+ * update the status of the current reservation if booked or seated
+ * using the current status of the reservation update then return
+ */
 async function updateStatus(req, res, next) {
   const updated = {
     ...res.locals.reservation,
@@ -203,12 +213,10 @@ function validStatus(req, res, next) {
     next({
       status: 400,
       message:
-        "Status unknown! Status must be set to 'booked', 'seated', or 'finished'",
+        "Status unknown! Status must be set to 'booked', 'seated', 'canceled' or 'finished'",
     });
   }
 }
-
-
 
 
 module.exports = {
