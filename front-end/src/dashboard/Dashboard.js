@@ -26,7 +26,6 @@ function Dashboard({ date, setDate }) {
   const history = useHistory();
   const query = useQuery();
   const route = useRouteMatch();
-  const externalImage = "https://garden.spoonflower.com/c/5090068/p/f/m/3yDyWOWB4oECjSmqcc9qmveAYXj9WfizlmWcqq8S3gEqvqlo5DilMA/Light%20Gray%20Solid.jpg"
 
 
   /**

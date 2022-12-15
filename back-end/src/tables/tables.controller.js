@@ -124,16 +124,13 @@ async function seatTable(req, res, next) {
 module.exports = {
   clearTable: [
     asyncErrorBoundary(tableExists),
-    tableOccupied,
     asyncErrorBoundary(clearTable),
   ],
   create: [hasValidProperties, asyncErrorBoundary(create)],
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(tableExists), read],
   update: [
-    validRequest,
     asyncErrorBoundary(tableExists),
-    asyncErrorBoundary(reservationExists),
     validTable,
     notSeated,
     asyncErrorBoundary(seatTable),

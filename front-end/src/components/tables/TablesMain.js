@@ -28,7 +28,6 @@ const TablesMain = ({ table }) => {
         <div>
           <button
             className="btn btn-danger"
-            style={{marginTop: "10px"}}
             data-table-id-finish={table_id}
             onClick={handleClick}
           >Finish
@@ -58,7 +57,7 @@ const TablesMain = ({ table }) => {
                     <th style={{width: "25%"}}>{capacity}</th>
                     <th style={{width: "25%"}}>{table_id}</th>
                     <th style={{width: "15%"}} data-table-id-status={table_id}>{reservation_id ? "Occupied" : "Free"}</th>
-                    <div>{finishTable}</div>
+                    <th>{finishTable}</th>
                 </tr>
             </tbody>
             </table>
