@@ -102,6 +102,23 @@ async function reservationExists(req, res, next) {
   });
 }
 
+async function validRequest(req, res, next) {
+  const { data } = req.body;
+  if (!data) {
+    return next({
+      status: 400,
+      message: `Requires request data`,
+    });
+  }
+  if (!data.reservation_id) {
+    return next({
+      status: 400,
+      message: `Requires reservation_id property`,
+    });
+  }
+  next();
+}
+
 // =====================================================
 
 // clear a reservation at a specific table
@@ -173,6 +190,7 @@ module.exports = {
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(tableExists), read],
   update: [
+    validRequest,
     asyncErrorBoundary(tableExists),
     asyncErrorBoundary(reservationExists),
     validTable,
