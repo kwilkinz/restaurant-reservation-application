@@ -26,9 +26,9 @@ function hasValidProperties(req, res, next) {
 
   /**
    * Checking Properties :
-   * 1st. if no property it needs to require one. 
-   * 2nd. requires the people to be a Number. 
-   * 3rd. requires the reservation date to be formatted correctly. 
+   * 1st. if no property it needs to require one.
+   * 2nd. requires the people to be a Number.
+   * 3rd. requires the reservation date to be formatted correctly.
    * 4th. requires the time to be formatted correctly.
    */
   VALID_PROPERTIES.forEach((property) => {
@@ -38,7 +38,7 @@ function hasValidProperties(req, res, next) {
         message: `Requires ${property}`,
       });
     }
-  
+
     if (property === "people" && !Number.isInteger(data.people)) {
       return next({
         status: 400,
@@ -46,7 +46,10 @@ function hasValidProperties(req, res, next) {
       });
     }
 
-    if (property === "reservation_date" && !dateFormatted.test(data.reservation_date)) {
+    if (
+      property === "reservation_date" &&
+      !dateFormatted.test(data.reservation_date)
+    ) {
       return next({
         status: 400,
         message: `Requires ${property} to be properly formatted as YYYY-MM-DD`,
@@ -66,12 +69,21 @@ function hasValidProperties(req, res, next) {
   next();
 }
 
-
-// Verifying conditions of days 
+// Verifying conditions of days
 function isValidDay(req, res, next) {
   const { data } = req.body;
-  const reservationDate = new Date(`${data.reservation_date} ${data.reservation_time}`);
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const reservationDate = new Date(
+    `${data.reservation_date} ${data.reservation_time}`
+  );
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
   let day = days[reservationDate.getDay()];
   let time = data.reservation_time;
   if (reservationDate < new Date() && day === "Tuesday") {
@@ -103,8 +115,8 @@ function isValidDay(req, res, next) {
 }
 
 /**
- * the reservation has to  start off as booked and can only be edited if the client 
- * is either free or booked. 
+ * the reservation has to  start off as booked and can only be edited if the client
+ * is either free or booked.
  * Cannot change once seated or client is finished.
  */
 function isBooked(req, res, next) {
@@ -144,7 +156,6 @@ async function reservationExists(req, res, next) {
   });
 }
 
-
 // ======================== ========== ========================
 
 // create a new reservation using "form" data
@@ -154,7 +165,7 @@ async function create(req, res) {
 }
 
 /**
- * List handler for reservation resources either by 
+ * List handler for reservation resources either by
  * date or mobile phone number
  */
 async function list(req, res) {
@@ -174,9 +185,9 @@ function read(req, res) {
 }
 
 /**
- * update the current reservation using the reservation_id being passed in 
- * via Url (req.body) and then update sending back the updated reservation 
- * */ 
+ * update the current reservation using the reservation_id being passed in
+ * via Url (req.body) and then update sending back the updated reservation
+ * */
 async function update(req, res, next) {
   const updated = {
     ...req.body.data,
@@ -217,7 +228,6 @@ function validStatus(req, res, next) {
     });
   }
 }
-
 
 module.exports = {
   create: [

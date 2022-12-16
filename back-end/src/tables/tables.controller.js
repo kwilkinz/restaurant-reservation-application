@@ -11,21 +11,40 @@ const VALID_PROPERTIES = ["capacity", "table_name"];
 
 // check that incoming data has only valid properties
 function hasValidProperties(req, res, next) {
-  const data = ({} = req.body);
-  const invalidFields = Object.keys(data).filter(
-    (field) => !VALID_PROPERTIES.includes(field)
-  );
-
-  if (invalidFields.length) {
+  const { data = {} } = req.body;
+  if (!data) {
     return next({
       status: 400,
-      message: `Invalid field(s): ${invalidFields.join(", ")}`,
+      message: "Requires request data.",
     });
   }
+  VALID_PROPERTIES.forEach((property) => {
+    if (!data[property]) {
+      return next({
+        status: 400,
+        message: `Requires ${property}`,
+      });
+    }
+    if (
+      (property === "capacity" && data.capacity < 1) ||
+      (property === "capacity" && !Number.isInteger(data.capacity))
+    ) {
+      return next({
+        status: 400,
+        message: `${property} required to have a Number of 1 or greater.`,
+      });
+    }
+    if (property === "table_name" && data.table_name.length <= 1) {
+      return next({
+        status: 400,
+        message: `${property} required to be at least 2 characters in length.`,
+      });
+    }
+  });
   next();
 }
 
-// check to make sure the table exists then pass along the table_id 
+// check to make sure the table exists then pass along the table_id
 async function tableExists(req, res, next) {
   const { table_id } = req.params;
   const table = await service.read(table_id);
@@ -59,6 +78,19 @@ function validTable(req, res, next) {
   next();
 }
 
+async function reservationExists(req, res, next) {
+  const { reservation_id } = req.body.data;
+  const reservation = await reservationService.read(reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `Reservation ${reservation_id} Not Found`,
+  });
+}
+
 // =====================================================
 
 // clear a reservation at a specific table
@@ -88,12 +120,12 @@ async function list(req, res) {
   res.json({ data });
 }
 
-// read a specific table 
+// read a specific table
 function read(req, res) {
   res.json({ data: res.locals.table });
 }
 
-//unseat a reservation from a table 
+//unseat a reservation from a table
 function notSeated(req, res, next) {
   const { reservation_id, status } = res.locals.reservation;
   if (status === "seated") {
@@ -105,7 +137,7 @@ function notSeated(req, res, next) {
   next();
 }
 
-//seat a reservation to a table 
+//seat a reservation to a table
 async function seatTable(req, res, next) {
   const reservation_id = res.locals.reservation.reservation_id;
   const table = res.locals.table;
@@ -120,17 +152,14 @@ async function seatTable(req, res, next) {
     .catch(next);
 }
 
-
 module.exports = {
-  clearTable: [
-    asyncErrorBoundary(tableExists),
-    asyncErrorBoundary(clearTable),
-  ],
+  clearTable: [asyncErrorBoundary(tableExists), asyncErrorBoundary(clearTable)],
   create: [hasValidProperties, asyncErrorBoundary(create)],
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(tableExists), read],
   update: [
     asyncErrorBoundary(tableExists),
+    asyncErrorBoundary(reservationExists),
     validTable,
     notSeated,
     asyncErrorBoundary(seatTable),
