@@ -58,6 +58,17 @@ async function tableExists(req, res, next) {
   });
 }
 
+function tableOccupied(req, res, next) {
+  const table = res.locals.table;
+  if (table.reservation_id === null) {
+    return next({
+      status: 400,
+      message: "Table is not occupied!",
+    });
+  }
+  next();
+}
+
 // if the table capacity can handle the current number of people within the party
 function validTable(req, res, next) {
   const reservation = res.locals.reservation;
@@ -153,7 +164,11 @@ async function seatTable(req, res, next) {
 }
 
 module.exports = {
-  clearTable: [asyncErrorBoundary(tableExists), asyncErrorBoundary(clearTable)],
+  clearTable: [
+    asyncErrorBoundary(tableExists),
+    tableOccupied,
+    asyncErrorBoundary(clearTable),
+  ],
   create: [hasValidProperties, asyncErrorBoundary(create)],
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(tableExists), read],
