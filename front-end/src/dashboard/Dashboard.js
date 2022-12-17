@@ -109,7 +109,7 @@ function Dashboard({ date, setDate }) {
           Next
         </button>
       </div>
-      <h3>Reservations for {date}</h3>
+      <h3>Reservations for: {date}</h3>
       <ErrorAlert error={reservationsError} />
       <ErrorAlert error={tableError} />
 
