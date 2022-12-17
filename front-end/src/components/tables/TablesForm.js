@@ -11,7 +11,7 @@ const TablesForm = () => {
   // Initial Form State
   const initialState = {
     table_name: "",
-    capacity: 1,
+    capacity: 0,
   };
 
   // useStates
@@ -38,10 +38,11 @@ const TablesForm = () => {
       table_name: formData.table_name,
       capacity: Number(formData.capacity),
     };
+    setShowError(false);
     try {
       await createTable(newTable, abortController.signal);
       setFormData(initialState);
-      history.push(`/dashboard`);
+      history.push("/dashboard");
     } catch (error) {
       if (error.name !== "AbortError") setShowError(error);
     }
@@ -72,30 +73,30 @@ const TablesForm = () => {
             {/* table name */}
             <label htmlFor="table_name" style={{ color: "whitesmoke" }}>
               <h5>Table Name:</h5>
+
+              <input
+                id="table_name"
+                type="text"
+                name="table_name"
+                onChange={handleChange}
+                value={formData.table_name}
+                placeholder="Bar #3"
+                min={2}
+                style={{ width: "20%", margin: "8px", textAlign: "center" }}
+              />
             </label>
-            <input
-              id="table_name"
-              type="text"
-              name="table_name"
-              onChange={handleChange}
-              value={formData.table_name}
-              placeholder="Bar #3"
-              required
-              style={{ width: "20%", margin: "8px", textAlign: "center" }}
-            />
             {/* Capacity */}
             <label htmlFor="capacity" style={{ color: "whitesmoke" }}>
               <h5>Table Capacity:</h5>
+              <input
+                id="capacity"
+                type="number"
+                name="capacity"
+                onChange={handleChange}
+                value={formData.capacity}
+                style={{ width: "30%", margin: "8px", textAlign: "center" }}
+              />
             </label>
-            <input
-              id="capacity"
-              type="number"
-              name="capacity"
-              onChange={handleChange}
-              value={formData.capacity}
-              required
-              style={{ width: "30%", margin: "8px", textAlign: "center" }}
-            />
             <div>
               {/* Submit Bttn */}
               <button

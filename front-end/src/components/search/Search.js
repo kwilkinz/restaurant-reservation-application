@@ -84,13 +84,11 @@ const Search = () => {
           <form onSubmit={handleSubmit}>
             <label htmlFor="mobile_number">
               <input
-                id="mobile_number"
-                type="text"
                 name="mobile_number"
+                type="tel"
                 onChange={handleChange}
-                value={FormData.mobile_phone}
+                value={formData.mobile_number}
                 placeholder="(---) --- ----"
-                required
               />
             </label>
             &nbsp;
@@ -100,11 +98,10 @@ const Search = () => {
           </form>
         </div>
       </div>
+      <ErrorAlert error={showError} />
       <div>
         <div className="card">{searchResults}</div>
       </div>
-
-      <ErrorAlert error={showError} />
     </main>
   );
 };

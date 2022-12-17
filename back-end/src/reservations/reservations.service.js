@@ -1,5 +1,13 @@
 const knex = require("../db/connection");
 
+// CREATE
+async function create(reservation) {
+  return knex("reservations")
+    .insert(reservation)
+    .returning("*")
+    .then((created) => created[0]);
+}
+
 //LIST By Date
 async function listByDate(reservation_date) {
   return knex("reservations")
@@ -25,14 +33,6 @@ async function read(reservation_id) {
   return knex("reservations").select("*").where({ reservation_id }).first();
 }
 
-// CREATE
-async function create(reservation) {
-  return knex("reservations")
-    .insert(reservation)
-    .returning("*")
-    .then((created) => created[0]);
-}
-
 // UPDATE
 async function update(reservation) {
   return knex("reservations")
@@ -41,7 +41,7 @@ async function update(reservation) {
     .then((updated) => updated[0]);
 }
 
-// UPDATE STATUS
+//UPDATE STATUS
 async function updateStatus(reservation_id, status) {
   return knex("reservations")
     .where({ reservation_id })
@@ -50,10 +50,10 @@ async function updateStatus(reservation_id, status) {
 }
 
 module.exports = {
+  create,
   listByDate,
   listByNumber,
   read,
-  create,
   update,
   updateStatus,
 };
