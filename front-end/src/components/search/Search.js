@@ -7,7 +7,7 @@ const Search = () => {
   //image
   const externalImage =
     "https://worldarchitecture.org/cdnimgfiles/extuploadc/15xxzwluzwil9549.jpg";
-  const initialState = { mobile_number: "--- --- ----" };
+  const initialState = { mobile_number: "" };
 
   //useStates
   const [reservations, setReservations] = useState([]);
