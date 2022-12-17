@@ -10,7 +10,9 @@
 - [File Setup](#files)
 - [Database Setup](#database-setup)
 - [Installation](#installation)
-- [Screenshots](#walkthrough)
+- [Screenshots](#screenshots)
+
+# Walkthrough
 
 ## Files
 
@@ -38,4 +40,26 @@ The table below describes the folders in this starter repository:
 1. Run `npm install` to install project dependencies.
 1. Run `npm run start:dev` to start your server in development mode.
 
-## Walkthrough
+---
+
+## Screenshots
+
+### New Reservation
+
+Application used for back-of-house only (servers, managers, etc). The new reservations page will allow the customer to call in and have their full name, phone number, date of reservation, time of reservation and party size.
+![new reservation](front-end/public/readmescreenshots/newReservation.jpg)
+
+### Create a New Table
+
+This page allows new tables to be created when need be. You must type in the table name and the capacity the table can hold.
+![create new table](front-end/public/readmescreenshots/createNewTable.png)
+
+### Search for a Reservation
+
+Allows the staff to search for a customer based off of the customers mobile phone number. When it cannot be found it will return not found rather than a phone number.
+![search](front-end/public/readmescreenshots/searchRes.png)
+
+### Dashboard of all Reservations and Tables
+
+The home screen lists all upcoming, prior, and later on reservations along with tables currently seated, occupied, of finished. All reservations for the current day will be listed at the top.
+![dashboard](front-end/public/readmescreenshots/dashboard.png)
