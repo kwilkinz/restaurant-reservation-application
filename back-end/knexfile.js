@@ -4,7 +4,7 @@
  * You will not need to make changes to this file.
  */
 
-require('dotenv').config();
+require("dotenv").config();
 const path = require("path");
 
 const {
@@ -12,7 +12,6 @@ const {
   DATABASE_URL_DEVELOPMENT,
   DATABASE_URL_TEST,
   DATABASE_URL_PREVIEW,
-  // DATABASE_URL_PREVIEW = "postgresql://postgres@localhost/postgres",
   DEBUG,
 } = process.env;
 
