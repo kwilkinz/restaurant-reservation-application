@@ -4,15 +4,18 @@
 
 > A fictional startup company, wanted an application that is creating a reservation > system for fine dining restaurants. The software is used only by restaurant personnel when a customer calls to request a reservation.
 
+> Live Version on Render: https://periodictables-reservations.onrender.com
+
 ## Nav
 
-- [Video Walkthrough]()
+- [Video Walkthrough](#walkthrough)
 - [File Setup](#files)
 - [Database Setup](#database-setup)
 - [Installation](#installation)
 - [Screenshots](#screenshots)
 
 # Walkthrough
+https://user-images.githubusercontent.com/105250570/208248090-bb6fa944-d8ec-43db-b949-e4b175f91e8e.mov
 
 ## Files
 
