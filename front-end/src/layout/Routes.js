@@ -5,7 +5,7 @@ import ReservationMain from "../components/reservations/ReservationMain";
 import Seat from "../components/seat/Seat";
 import EditReservation from "../components/reservations/EditReservation";
 import TablesForm from "../components/tables/TablesForm";
-import Search from "../components/search/Search";
+import Search from "../components/search/search";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 
@@ -32,23 +32,23 @@ function Routes() {
         <ReservationMain />
       </Route>
 
-      <Route path="/reservations/:reservation_id/edit" >
-        <EditReservation date={date} setDate={setDate}/> 
+      <Route path="/reservations/:reservation_id/edit">
+        <EditReservation date={date} setDate={setDate} />
       </Route>
 
-     <Route path="/reservations/:reservation_id/seat" >
-        <Seat /> 
+      <Route path="/reservations/:reservation_id/seat">
+        <Seat />
       </Route>
 
-      <Route exact={true} path="/tables/new" >
+      <Route path="/tables/new">
         <TablesForm />
       </Route>
 
-      <Route path="/search" >
+      <Route exact={true} path="/search">
         <Search />
       </Route>
 
-      <Route exact={true} path="/tables" >
+      <Route exact={true} path="/tables">
         <Redirect to={"/dashboard"} />
       </Route>
 

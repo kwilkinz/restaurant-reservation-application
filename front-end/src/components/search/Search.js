@@ -7,102 +7,81 @@ const Search = () => {
   //image
   const externalImage =
     "https://worldarchitecture.org/cdnimgfiles/extuploadc/15xxzwluzwil9549.jpg";
-  const initialState = { mobile_number: "" };
 
   //useStates
   const [reservations, setReservations] = useState([]);
-  const [formData, setFormData] = useState({ ...initialState });
   const [showError, setShowError] = useState(null);
+  const [mobile, setMobile] = useState("");
+  const [noReservations, setNoReservations] = useState(false);
 
-  // handle change
+  //handle change
   function handleChange({ target }) {
-    setFormData({
-      ...formData,
-      [target.name]: target.value,
-    });
+    setMobile(target.value);
   }
 
-  //handle submit
-  async function handleSubmit(event) {
+  //handle submit function
+  function submitHandler(event) {
     event.preventDefault();
     const abortController = new AbortController();
-    const searchQuery = {
-      mobile_number: formData.mobile_number,
-    };
-    setFormData(initialState);
     setShowError(null);
-    try {
-      const getData = await listReservations(
-        searchQuery,
-        abortController.signal
-      );
-      setReservations(getData);
-    } catch (error) {
-      if (error.name !== "AbortError") setShowError(error);
-    }
-    return () => abortController.abort();
+    listReservations({ mobile_number: mobile }, abortController.signal)
+      .then((response) => {
+        response.length > 0
+          ? setReservations(response)
+          : setNoReservations(true);
+      })
+      .catch(setShowError);
   }
 
-  const searchResults =
-    reservations.length > 0
-      ? reservations.map((reservation) => (
-          <ViewReservation
-            key={reservation.reservation_id}
-            reservation={reservation}
-          />
-        ))
-      : "No reservation found";
+  const searchResults = reservations.map((reservation) => (
+    <ViewReservation
+      key={reservation.reservation_id}
+      reservation={reservation}
+    />
+  ));
 
   return (
-    <main>
+    <div
+      style={{
+        backgroundImage: `url(${externalImage})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        filter: "(brightness(0.8) + brightness(1.3)",
+        padding: "85px",
+        borderRadius: "15px",
+      }}
+    >
+      <div
+        className="d-md-flex mb-3"
+        style={{ justifyContent: "center", alignItems: "center" }}
+      >
+        <h3 style={{ color: "white" }}>
+          Search for a reservation by phone number
+        </h3>
+      </div>
       <div
         style={{
-          backgroundImage: `url(${externalImage})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          filter: "(brightness(0.8) + brightness(1.3)",
-          padding: "85px",
-          borderRadius: "15px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <div
-          className="d-md-flex mb-3"
-          style={{ justifyContent: "center", alignItems: "center" }}
-        >
-          <h3 style={{ color: "white" }}>
-            Search for a reservation by phone number
-          </h3>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="mobile_number">
-              <input
-                name="mobile_number"
-                type="tel"
-                onChange={handleChange}
-                value={formData.mobile_number}
-                placeholder="(---) --- ----"
-              />
-            </label>
-            &nbsp;
-            <button type="submit" className="btn btn-dark">
-              Find Reservation
-            </button>
-          </form>
-        </div>
+        <form onSubmit={(event) => submitHandler(event)}>
+          <label htmlFor="mobile_number">Search for reservation</label>
+          <input
+            name="mobile_number"
+            value={mobile}
+            onChange={handleChange}
+            placeholder="(---) --- ----"
+          />
+          <button type="submit">Find</button>
+        </form>
+        <ErrorAlert error={showError} />
+        <div>{searchResults}</div>
+        {noReservations === true && <p>No reservations found</p>}
       </div>
-      <ErrorAlert error={showError} />
-      <div>
-        <div className="card">{searchResults}</div>
-      </div>
-    </main>
+    </div>
   );
 };
 

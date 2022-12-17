@@ -156,6 +156,22 @@ async function reservationExists(req, res, next) {
   });
 }
 
+function mobileIsNumber(req, res, next) {
+  const { data = {} } = req.body;
+  const check =
+    /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(
+      data["mobile_number"]
+    );
+
+  if (!check) {
+    return next({
+      status: 404,
+      message: "Mobile Number must be a valid 10 digit phone number",
+    });
+  }
+
+  next();
+}
 // ======================== ========== ========================
 
 // create a new reservation using "form" data
@@ -234,6 +250,7 @@ module.exports = {
     hasValidProperties,
     isValidDay,
     isBooked,
+    mobileIsNumber,
     asyncErrorBoundary(create),
   ],
   list: [asyncErrorBoundary(list)],
@@ -241,6 +258,7 @@ module.exports = {
   update: [
     asyncErrorBoundary(reservationExists),
     hasValidProperties,
+    mobileIsNumber,
     asyncErrorBoundary(update),
   ],
   updateStatus: [
