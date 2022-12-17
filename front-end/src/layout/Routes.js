@@ -5,7 +5,7 @@ import ReservationMain from "../components/reservations/ReservationMain";
 import Seat from "../components/seat/Seat";
 import EditReservation from "../components/reservations/EditReservation";
 import TablesForm from "../components/tables/TablesForm";
-import Search from "../components/search/search";
+import Search from "../components/search/Search";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 
