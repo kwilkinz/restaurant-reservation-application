@@ -51,7 +51,7 @@ const Search = () => {
             reservation={reservation}
           />
         ))
-      : null;
+      : "No reservation found";
 
   return (
     <main>
@@ -82,15 +82,17 @@ const Search = () => {
           }}
         >
           <form onSubmit={handleSubmit}>
-            <input
-              id="mobile_number"
-              type="text"
-              name="mobile_number"
-              onChange={handleChange}
-              value={FormData.mobile_phone}
-              placeholder="(---) --- ----"
-              required
-            />
+            <label htmlFor="mobile_number">
+              <input
+                id="mobile_number"
+                type="text"
+                name="mobile_number"
+                onChange={handleChange}
+                value={FormData.mobile_phone}
+                placeholder="(---) --- ----"
+                required
+              />
+            </label>
             &nbsp;
             <button type="submit" className="btn btn-dark">
               Find Reservation

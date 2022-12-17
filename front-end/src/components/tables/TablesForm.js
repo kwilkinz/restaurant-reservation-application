@@ -79,8 +79,8 @@ const TablesForm = () => {
               name="table_name"
               onChange={handleChange}
               value={formData.table_name}
-              required
               placeholder="Bar #3"
+              required
               style={{ width: "20%", margin: "8px", textAlign: "center" }}
             />
             {/* Capacity */}
@@ -102,7 +102,8 @@ const TablesForm = () => {
                 style={{ paddingLeft: "25px", paddingRight: "25px" }}
                 className="btn btn-secondary shadow"
                 type="submit"
-                >Submit
+              >
+                Submit
               </button>
               &nbsp;
               {/* Cancel Bttn */}
@@ -111,7 +112,8 @@ const TablesForm = () => {
                 className="btn btn-dark shadow "
                 type="button"
                 onClick={() => history.goBack()}
-                >Cancel
+              >
+                Cancel
               </button>
             </div>
           </form>

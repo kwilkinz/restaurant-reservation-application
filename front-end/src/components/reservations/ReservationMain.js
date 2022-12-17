@@ -6,7 +6,8 @@ import { createReservation } from "../../utils/api";
 
 const ReservationMain = ({ date }) => {
   //image
-  const externalImage = "https://worldarchitecture.org/cdnimgfiles/extuploadc/2002kinkbar2179.jpg"
+  const externalImage =
+    "https://worldarchitecture.org/cdnimgfiles/extuploadc/2002kinkbar2179.jpg";
 
   // Initial Form State
   const initialState = {
@@ -33,7 +34,7 @@ const ReservationMain = ({ date }) => {
     formatedDate.splice(10);
     formatedDate = formatedDate.join("");
     return formatedDate;
-  }
+  };
 
   // format time
   const formatTime = (time) => {
@@ -41,9 +42,9 @@ const ReservationMain = ({ date }) => {
     formatedTime.splice(5);
     formatedTime = formatedTime.join("");
     return formatedTime;
-  }
+  };
 
-  // handle change  
+  // handle change
   async function handleChange({ target }) {
     const { name, value } = target;
     switch (name) {
@@ -62,11 +63,11 @@ const ReservationMain = ({ date }) => {
     }
   }
 
-  // handle Submit 
+  // handle Submit
   async function handleSubmit(event) {
     event.preventDefault();
     setShowError(false);
-    const newRes = {
+    let newRes = {
       first_name: formData.first_name,
       last_name: formData.last_name,
       mobile_number: formData.mobile_number,
@@ -89,16 +90,24 @@ const ReservationMain = ({ date }) => {
   }
 
   return (
-    <div style={{
-      backgroundImage: `url(${externalImage})`,
-      backgroundSize: "cover",
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center",
-      opacity: "87%",
-      padding: "80px", 
-      borderRadius: "15px"}}>
-      <h1  style={{color: "white", textAlign: "center"}}>Make a New Reservation</h1>
-      <div className="d-md-flex mb-3" style={{textAlign: "center", justifyContent: "center"}}>
+    <div
+      style={{
+        backgroundImage: `url(${externalImage})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        opacity: "87%",
+        padding: "80px",
+        borderRadius: "15px",
+      }}
+    >
+      <h1 style={{ color: "white", textAlign: "center" }}>
+        Make a New Reservation
+      </h1>
+      <div
+        className="d-md-flex mb-3"
+        style={{ textAlign: "center", justifyContent: "center" }}
+      >
         <ErrorAlert error={showError} />
         <ReservationForm
           formData={formData}

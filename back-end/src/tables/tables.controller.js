@@ -26,7 +26,7 @@ function hasValidProperties(req, res, next) {
       });
     }
     if (
-      (property === "capacity" && data.capacity < 1) ||
+      (property === "capacity" && data.capacity <= 0) ||
       (property === "capacity" && !Number.isInteger(data.capacity))
     ) {
       return next({
