@@ -68,18 +68,28 @@ const Search = () => {
         }}
       >
         <form onSubmit={(event) => submitHandler(event)}>
-          <label htmlFor="mobile_number">Search for reservation</label>
+          <label htmlFor="mobile_number"></label>
           <input
             name="mobile_number"
             value={mobile}
             onChange={handleChange}
             placeholder="(---) --- ----"
           />
-          <button type="submit">Find</button>
+          <button
+            type="submit"
+            className="btn btn-dark"
+            style={{ marginLeft: "5px" }}
+          >
+            Find
+          </button>
         </form>
         <ErrorAlert error={showError} />
         <div>{searchResults}</div>
-        {noReservations === true && <p>No reservations found</p>}
+        {noReservations === true && (
+          <p style={{ color: "white", marginLeft: "10px" }}>
+            No reservations found...
+          </p>
+        )}
       </div>
     </div>
   );

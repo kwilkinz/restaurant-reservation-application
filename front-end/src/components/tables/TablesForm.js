@@ -66,7 +66,7 @@ const TablesForm = () => {
       >
         <ErrorAlert className="alert alert-danger" error={showError} />
         <div style={{ justifyContent: "center", textAlign: "center" }}>
-          <h1 style={{ color: "whitesmoke", filter: "brightness(0.9)" }}>
+          <h1 style={{ color: "whitesmoke", filter: "brightness(1)" }}>
             Create a New Table
           </h1>
           <form onSubmit={handleSubmit}>
@@ -82,7 +82,7 @@ const TablesForm = () => {
                 value={formData.table_name}
                 placeholder="Bar #3"
                 min={2}
-                style={{ width: "20%", margin: "8px", textAlign: "center" }}
+                style={{ width: "50%", margin: "8px", textAlign: "center" }}
               />
             </label>
             {/* Capacity */}
@@ -94,7 +94,7 @@ const TablesForm = () => {
                 name="capacity"
                 onChange={handleChange}
                 value={formData.capacity}
-                style={{ width: "30%", margin: "8px", textAlign: "center" }}
+                style={{ width: "45%", margin: "8px", textAlign: "center" }}
               />
             </label>
             <div>
